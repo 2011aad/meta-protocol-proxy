@@ -24,11 +24,11 @@ BAZEL_TARGETS = envoy
 
 build:
 	export PATH=$(PATH) CC=$(CC) CXX=$(CXX) && \
-	bazel --output_base=/build build $(BAZEL_CONFIG_DEV) $(BAZEL_TARGETS)
+	bazel --output_user_root=./build --output_base=./build/base build $(BAZEL_CONFIG_DEV) $(BAZEL_TARGETS)
 
 release:
 	export PATH=$(PATH) CC=$(CC) CXX=$(CXX) && \
-	bazel --output_base=/build build $(BAZEL_CONFIG_REL) $(BAZEL_TARGETS)
+	bazel --output_user_root=./build --output_base=./build/base build $(BAZEL_CONFIG_REL) $(BAZEL_TARGETS)
 
 # output files are in this location: bazel-bin/api/meta_protocol_proxy
 api:
