@@ -17,18 +17,18 @@ CC := clang-10
 CXX := clang++-10
 PATH := /home/ubuntu/clang+llvm-10.0.0-linux-gnu/bin:$(PATH)
 
-BAZEL_CONFIG = -s --output_base=/build --sandbox_debug --verbose_failures --verbose_explanations --explain=build.log --host_force_python=PY3 --override_repository=envoy=/envoy
+BAZEL_CONFIG = -s --sandbox_debug --verbose_failures --verbose_explanations --explain=build.log --host_force_python=PY3 --override_repository=envoy=/envoy
 BAZEL_CONFIG_DEV  = $(BAZEL_CONFIG) --config=libc++
 BAZEL_CONFIG_REL  = $(BAZEL_CONFIG_DEV) --config=release
 BAZEL_TARGETS = envoy
 
 build:
 	export PATH=$(PATH) CC=$(CC) CXX=$(CXX) && \
-	bazel build $(BAZEL_CONFIG_DEV) $(BAZEL_TARGETS)
+	bazel --output_base=/build build $(BAZEL_CONFIG_DEV) $(BAZEL_TARGETS)
 
 release:
 	export PATH=$(PATH) CC=$(CC) CXX=$(CXX) && \
-	bazel build $(BAZEL_CONFIG_REL) $(BAZEL_TARGETS)
+	bazel --output_base=/build build $(BAZEL_CONFIG_REL) $(BAZEL_TARGETS)
 
 # output files are in this location: bazel-bin/api/meta_protocol_proxy
 api:
