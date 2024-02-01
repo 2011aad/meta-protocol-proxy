@@ -20,7 +20,7 @@ namespace Thrift {
 
 std::string bufferToHexString(Buffer::Instance& buffer) {
   std::ostringstream ss;
-  const uint8_t* data = buffer.linearize(buffer.length());
+  void* data = buffer.linearize(buffer.length());
   for (size_t i = 0; i < buffer.length(); i++) {
     ss << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(data[i]);
     if (i % 2 != 0) {
