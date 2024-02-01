@@ -1,4 +1,7 @@
 #include <any>
+#include <iostream>
+#include <sstream>
+#include <iomanip>
 
 #include "envoy/buffer/buffer.h"
 
@@ -15,10 +18,22 @@ namespace NetworkFilters {
 namespace MetaProtocolProxy {
 namespace Thrift {
 
+std::string bufferToHexString(const Buffer::Instance& buffer) {
+  std::ostringstream ss;
+  const uint8_t* data = buffer.linearize(buffer.length());
+  for (size_t i = 0; i < buffer.length(); i++) {
+    ss << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(data[i]);
+    if (i % 2 != 0) {
+      ss << " ";
+    }
+  }
+  return ss.str();
+}
+
 MetaProtocolProxy::DecodeStatus ThriftCodec::decode(Buffer::Instance& data,
                                                     MetaProtocolProxy::Metadata& metadata) {
 
-  ENVOY_LOG(debug, "thrift: {} bytes available", data.length());
+  ENVOY_LOG(debug, "thrift: {} bytes available, content: {}", data.length(), bufferToHexString(data));
 
   if (frame_ended_) {
     // Continuation after filter stopped iteration on transportComplete callback.
