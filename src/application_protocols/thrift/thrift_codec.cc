@@ -18,7 +18,7 @@ namespace NetworkFilters {
 namespace MetaProtocolProxy {
 namespace Thrift {
 
-std::string bufferToHexString(const Buffer::Instance& buffer) {
+std::string bufferToHexString(Buffer::Instance& buffer) {
   std::ostringstream ss;
   const uint8_t* data = buffer.linearize(buffer.length());
   for (size_t i = 0; i < buffer.length(); i++) {
